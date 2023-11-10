@@ -38,11 +38,11 @@ def redate_dump_fixhdr(infile, outfile, year, month, day):
 
     for i in range(0, fix_hdr[151]):
         pp_hdrs[i,0] = year
-        pp_hdrs[i,6] = year   
+#        pp_hdrs[i,6] = year   
         pp_hdrs[i,1] = month
-        pp_hdrs[i,7] = month   
+#        pp_hdrs[i,7] = month   
         pp_hdrs[i,2] = day
-        pp_hdrs[i,8] = day    
+#        pp_hdrs[i,8] = day    
     # read all the data in
     data = read_data(fh, fix_hdr, intc, pp_hdrs)
     

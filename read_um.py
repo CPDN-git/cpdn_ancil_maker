@@ -22,7 +22,7 @@ def read_fixed_header(fh):
     FIX_HDR_SIZ = 256
     fix_hdr_raw = fh.read(FIX_HDR_LEN*WORDSIZE)
     fix_hdr = array.array('i')
-    fix_hdr.fromstring(fix_hdr_raw)
+    fix_hdr.frombytes(fix_hdr_raw)
     ret_array = numpy.ones([FIX_HDR_SIZ], 'i4') * -32768
     ret_array[:FIX_HDR_LEN] = numpy.array(fix_hdr, 'i4')
     return ret_array
@@ -31,9 +31,9 @@ def read_fixed_header(fh):
 
 def read_pp_headers(fh, fix_hdr):
     # lookup start
-    l_start = fix_hdr[149]
-    l_dim1  = fix_hdr[150]
-    l_dim2  = fix_hdr[151]
+    l_start = int(fix_hdr[149])
+    l_dim1  = int(fix_hdr[150])
+    l_dim2  = int(fix_hdr[151])
     pp_hdr_size = l_dim1 * l_dim2 * WORDSIZE
     
     # seek to start
@@ -41,7 +41,7 @@ def read_pp_headers(fh, fix_hdr):
     # read in the raw pp headers
     pp_hdr_raw = fh.read(pp_hdr_size)
     pp_hdrs = array.array('i')
-    pp_hdrs.fromstring(pp_hdr_raw)
+    pp_hdrs.frombytes(pp_hdr_raw)
     pp_hdrs_array = numpy.array(pp_hdrs, 'i4')
     pp_hdrs_array = pp_hdrs_array.reshape([l_dim2, l_dim1])
     return pp_hdrs_array
@@ -60,7 +60,7 @@ def read_integer_constants(fh, fix_hdr):
     ic_hdr_raw = fh.read(ic_size)
     # convert to numpy integers
     ic_hdrs = array.array('i')
-    ic_hdrs.fromstring(ic_hdr_raw)
+    ic_hdrs.frombytes(ic_hdr_raw)
     return numpy.array(ic_hdrs, 'i4')
 
 #############################################################################
@@ -77,7 +77,7 @@ def read_real_constants(fh, fix_hdr):
     fc_hdr_raw = fh.read(fc_size)
     # convert to numpy integers
     fc_hdrs = array.array('f')
-    fc_hdrs.fromstring(fc_hdr_raw)
+    fc_hdrs.frombytes(fc_hdr_raw)
     return numpy.array(fc_hdrs, 'f')
     
 #############################################################################
@@ -95,7 +95,7 @@ def read_level_constants(fh, fix_hdr):
     levc_hdr_raw = fh.read(levc_size)
     # convert to numpy floats
     levc_hdrs = array.array('f')
-    levc_hdrs.fromstring(levc_hdr_raw)
+    levc_hdrs.frombytes(levc_hdr_raw)
     return numpy.array(levc_hdrs, 'f')
     
 #############################################################################
@@ -113,7 +113,7 @@ def read_row_constants(fh, fix_hdr):
     rowc_hdr_raw = fh.read(rowc_size)
     # convert to numpy floats
     rowc_hdrs = array.array('f')
-    rowc_hdrs.fromstring(rowc_hdr_raw)
+    rowc_hdrs.frombytes(rowc_hdr_raw)
     return numpy.array(rowc_hdrs, 'f')
 
 #############################################################################
@@ -142,6 +142,6 @@ def read_data(fh, fix_hdr, intc, pp_hdrs, start_idx=-1, n_fields=-1):
         fh.seek(surface_offset * WORDSIZE, os.SEEK_SET)
         data_raw = fh.read(surface_size * WORDSIZE)
         data = array.array('f')
-        data.fromstring(data_raw)
+        data.frombytes(data_raw)
         all_data.extend(data[0:c_hdr[14]])
     return numpy.array(all_data, 'f')
