@@ -95,7 +95,7 @@ def perturb_data(fh, fix_hdr, intc, pp_hdrs, pert_data,field,start_idx=-1, n_fie
 
 #############################################################################
 
-def perturb_dump(infile, pert_file, field, outfile,generic):
+def perturb_dump(infile, pert_file, field, outfile, generic):
     sfx=pert_file.split(".")[-1]
     print(sfx)
     if sfx=="nc":
@@ -117,9 +117,9 @@ def perturb_dump(infile, pert_file, field, outfile,generic):
         rowc = read_row_constants(fh, fix_hdr)
     else:
         rowc = numpy.zeros([0], 'f')
-    
+
     # Check if year should be made generic
-    if generic==1:
+    if generic == 1:
         fix_hdr[27] = 0
 
     # read all the data in
